@@ -45,7 +45,7 @@ function usePetalCanvas(canvasRef) {
     resize();
     window.addEventListener('resize', resize);
 
-    const COLS = ['#D4AF37','#0A1931','#FFD700','#FF8C00','#F7ECCB','#182C51'];
+    const COLS = ['#D4AF37', '#0A1931', '#FFD700', '#FF8C00', '#F7ECCB', '#182C51'];
     const pts = Array.from({ length: 46 }, () => ({
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
@@ -103,10 +103,10 @@ function useCustomCursor(cursorRef, ringRef) {
     const onMove = (e) => {
       const x = e.clientX, y = e.clientY;
       cur.style.left = x + 'px';
-      cur.style.top  = y + 'px';
+      cur.style.top = y + 'px';
       setTimeout(() => {
         ring.style.left = x + 'px';
-        ring.style.top  = y + 'px';
+        ring.style.top = y + 'px';
       }, 95);
     };
     document.addEventListener('mousemove', onMove);
@@ -124,10 +124,10 @@ function useParallaxMandala(heroRef) {
 
     const onScroll = () => {
       const sy = window.scrollY;
-      const mC  = hero.querySelector('.mnd-center');
+      const mC = hero.querySelector('.mnd-center');
       const mTL = hero.querySelector('.mnd-tl');
       const mBR = hero.querySelector('.mnd-br');
-      if (mC)  mC.style.transform  = `translate(-50%,calc(-50% + ${sy * .06}px)) rotate(${sy * .018}deg)`;
+      if (mC) mC.style.transform = `translate(-50%,calc(-50% + ${sy * .06}px)) rotate(${sy * .018}deg)`;
       if (mTL) mTL.style.transform = `translateY(${sy * .13}px) rotate(-18deg)`;
       if (mBR) mBR.style.transform = `translateY(${sy * .13}px) rotate(22deg)`;
     };
@@ -302,7 +302,7 @@ function HeroSection({ heroRef }) {
   );
 }
 
-function InviteSection() {
+function InviteSection({ invite }) {
   return (
     <section className="invite-sec">
       <div className="inner">
@@ -311,8 +311,9 @@ function InviteSection() {
         <div className="orn rv d3"></div>
 
         <p className="invite-text rv d3">
-          We request the honour of your presence with family<br />
-          to grace the auspicious occasion of the marriage of<br /><br />
+          We request the honour of your presence, along with your family,<br />
+          to grace the auspicious occasion of the{" "}
+          {invite === "reception" ? "wedding reception" : "marriage"} of<br /><br />
           <strong>Hemandh P M</strong> &amp; <strong>Athira Prakash</strong>
         </p>
 
@@ -559,9 +560,9 @@ function GuestBanner({ invite, name }) {
 
   let msg = '';
   if (name) msg += `Dear ${name} — `;
-  if (invite === 'wedding')        msg += 'We cordially invite you to the wedding ceremony of our beloved children, Hemandh & Athira and request the pleasure of your presence on this auspicious occasion · 3rd May';
+  if (invite === 'wedding') msg += 'We cordially invite you to the wedding ceremony of our beloved children, Hemandh & Athira and request the pleasure of your presence on this auspicious occasion · 3rd May';
   else if (invite === 'reception') msg += 'We warmly invite you to join us for the wedding reception of our beloved children, Hemandh & Athira and celebrate this joyous occasion with us · 4th May';
-  else                             msg += 'We request the honor of your presence at the wedding and reception of our beloved children, Hemandh & Athira as we celebrate the beginning of their new journey together';
+  else msg += 'We request the honour of your presence at the wedding and reception of our beloved children, Hemandh & Athira as we celebrate the beginning of their new journey together';
 
   return (
     <div id="guest-banner" className="show">
@@ -576,8 +577,8 @@ function GuestBanner({ invite, name }) {
 export default function App() {
   const canvasRef = useRef(null);
   const cursorRef = useRef(null);
-  const ringRef   = useRef(null);
-  const heroRef   = useRef(null);
+  const ringRef = useRef(null);
+  const heroRef = useRef(null);
 
   const { invite, name, type } = useGuestParams();
   const hasBanner = !!(name || invite !== 'both');
@@ -607,7 +608,7 @@ export default function App() {
 
       {/* Sections */}
       <HeroSection heroRef={heroRef} />
-      <InviteSection />
+      <InviteSection invite={invite} />
       <CelebSection invite={invite} />
       <TimelineSection invite={invite} />
       <RsvpSection type={type} />
