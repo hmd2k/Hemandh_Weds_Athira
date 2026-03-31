@@ -13,7 +13,8 @@ function useGuestParams() {
   const p = new URLSearchParams(window.location.search);
   const invite = (p.get('invite') || 'both').toLowerCase().trim();
   const name = p.get('name') ? decodeURIComponent(p.get('name')) : '';
-  return { invite, name };
+  const type = (p.get('type') || 'H').toUpperCase().trim();
+  return { invite, name, type };
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -461,15 +462,15 @@ function TimelineSection({ invite }) {
   );
 }
 
-function RsvpSection() {
+function RsvpSection({ type }) {
   return (
     <section className="rsvp-sec">
       <div className="inner">
         <h2 className="ttl rv d2">With best compliments</h2>
         <div className="orn wide rv d3"></div>
-        <div className="eyebrow rv d1" style={{ fontSize: '1rem', color: 'var(--wine)' }}>Anvi Akshay</div>
-        <div className="eyebrow rv d1" style={{ fontSize: '1rem', color: 'var(--wine)' }}>Akshay P M</div>
-        <div className="eyebrow rv d1" style={{ fontSize: '1rem', color: 'var(--wine)' }}>Anargha Santhosh</div>
+        <div className="eyebrow rv d1" style={{ fontSize: '1rem', color: 'var(--wine)' }}>{type === 'A' ? 'Aarav M Amal' : 'Anvi Akshay'}</div>
+        <div className="eyebrow rv d1" style={{ fontSize: '1rem', color: 'var(--wine)' }}>{type === 'A' ? 'Amal Ramesh' : 'Akshay P M'}</div>
+        <div className="eyebrow rv d1" style={{ fontSize: '1rem', color: 'var(--wine)' }}>{type === 'A' ? 'Ahalya Prakash' : 'Anargha Santhosh'}</div>
         <div className="orn wide rv d3"></div>
         <p className="rsvp-body rv d4">
           We would be deeply honoured to have you and your family celebrate with us.<br />
@@ -493,7 +494,7 @@ function RsvpSection() {
   );
 }
 
-function ContactSection() {
+function ContactSection({ type }) {
   return (
     <section className="contact-sec">
       <div className="inner">
@@ -502,18 +503,37 @@ function ContactSection() {
         <div className="orn rv d3"></div>
 
         <div className="contact-list rv d4">
-          <div className="c-row">
-            <div className="c-person">Mahilal P R</div>
-            <div className="c-num"><a href="tel:8921477653">89214 77653</a></div>
-          </div>
-          <div className="c-row">
-            <div className="c-person">Akshay P M</div>
-            <div className="c-num"><a href="tel:9946655193">99466 55193</a></div>
-          </div>
-          <div className="c-row">
-            <div className="c-person">Hemandh P M</div>
-            <div className="c-num"><a href="tel:9446521711">94465 21711</a></div>
-          </div>
+          {type === 'A' ? (
+            <>
+              <div className="c-row">
+                <div className="c-person">Prakash M K</div>
+                <div className="c-num"><a href="tel:9846397150">98463 97150</a></div>
+              </div>
+              <div className="c-row">
+                <div className="c-person">Bindu Prakash</div>
+                <div className="c-num"><a href="tel:9061974440">90619 74440</a></div>
+              </div>
+              <div className="c-row">
+                <div className="c-person">Amal Ramesh</div>
+                <div className="c-num"><a href="tel:9947386723">99473 86723</a></div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="c-row">
+                <div className="c-person">Mahilal P R</div>
+                <div className="c-num"><a href="tel:8921477653">89214 77653</a></div>
+              </div>
+              <div className="c-row">
+                <div className="c-person">Akshay P M</div>
+                <div className="c-num"><a href="tel:9946655193">99466 55193</a></div>
+              </div>
+              <div className="c-row">
+                <div className="c-person">Hemandh P M</div>
+                <div className="c-num"><a href="tel:9446521711">94465 21711</a></div>
+              </div>
+            </>
+          )}
         </div>
 
         <div className="closing rv d5">
@@ -539,9 +559,9 @@ function GuestBanner({ invite, name }) {
 
   let msg = '';
   if (name) msg += `Dear ${name} — `;
-  if (invite === 'wedding')        msg += 'We cordially invite you to the wedding ceremony of Hemandh & Athira and request the pleasure of your presence on this auspicious occasion · 3rd May';
-  else if (invite === 'reception') msg += 'We warmly invite you to join us for the wedding reception of Hemandh & Athira and celebrate this joyous occasion with us · 4th May';
-  else                             msg += 'We request the honor of your presence at the wedding and reception of Hemandh & Athira as we celebrate the beginning of our new journey together';
+  if (invite === 'wedding')        msg += 'We cordially invite you to the wedding ceremony of our beloved children, Hemandh & Athira and request the pleasure of your presence on this auspicious occasion · 3rd May';
+  else if (invite === 'reception') msg += 'We warmly invite you to join us for the wedding reception of our beloved children, Hemandh & Athira and celebrate this joyous occasion with us · 4th May';
+  else                             msg += 'We request the honor of your presence at the wedding and reception of our beloved children, Hemandh & Athira as we celebrate the beginning of their new journey together';
 
   return (
     <div id="guest-banner" className="show">
@@ -559,7 +579,7 @@ export default function App() {
   const ringRef   = useRef(null);
   const heroRef   = useRef(null);
 
-  const { invite, name } = useGuestParams();
+  const { invite, name, type } = useGuestParams();
   const hasBanner = !!(name || invite !== 'both');
 
   useScrollReveal();
@@ -590,8 +610,8 @@ export default function App() {
       <InviteSection />
       <CelebSection invite={invite} />
       <TimelineSection invite={invite} />
-      <RsvpSection />
-      <ContactSection />
+      <RsvpSection type={type} />
+      <ContactSection type={type} />
     </>
   );
 }
