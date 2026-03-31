@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './index.css';
 
 /* ═══════════════════════════════════════════════════════════════
@@ -539,9 +539,9 @@ function GuestBanner({ invite, name }) {
 
   let msg = '';
   if (name) msg += `Dear ${name} — `;
-  if (invite === 'wedding')        msg += 'You are invited to the Wedding Ceremony · 3rd May';
-  else if (invite === 'reception') msg += 'You are invited to the Wedding Reception · 4th May';
-  else                             msg += 'You are invited to both the Wedding & Reception';
+  if (invite === 'wedding')        msg += 'We cordially invite you to the wedding ceremony of Hemandh & Athira and request the pleasure of your presence on this auspicious occasion · 3rd May';
+  else if (invite === 'reception') msg += 'We warmly invite you to join us for the wedding reception of Hemandh & Athira and celebrate this joyous occasion with us · 4th May';
+  else                             msg += 'We request the honor of your presence at the wedding and reception of Hemandh & Athira as we celebrate the beginning of our new journey together';
 
   return (
     <div id="guest-banner" className="show">
