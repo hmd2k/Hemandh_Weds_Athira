@@ -4,16 +4,16 @@ import './index.css';
 /* ═══════════════════════════════════════════════════════════════
    URL PARAMETER LOGIC
    Usage:
-     ?invite=both       (default) show both events
-     ?invite=wedding    show wedding only
-     ?invite=reception  show reception only
+     ?i=b               (default) show both events
+     ?i=w               show wedding only
+     ?i=r               show reception only
      ?name=Rajan%20Nair add personalised banner
 ═══════════════════════════════════════════════════════════════ */
 function useGuestParams() {
   const p = new URLSearchParams(window.location.search);
-  const invite = (p.get('invite') || 'both').toLowerCase().trim();
+  const invite = (p.get('i') || 'b').toLowerCase().trim();
   const name = p.get('name') ? decodeURIComponent(p.get('name')) : '';
-  const type = (p.get('type') || 'H').toUpperCase().trim();
+  const type = (p.get('t') || 'H').toUpperCase().trim();
   return { invite, name, type };
 }
 
@@ -313,7 +313,7 @@ function InviteSection({ invite }) {
         <p className="invite-text rv d3">
           We request the honour of your presence, along with your family,<br />
           to grace the auspicious occasion of the{" "}
-          {invite === "reception" ? "wedding reception" : "marriage"} of<br /><br />
+          {invite === "r" ? "wedding reception" : "marriage"} of<br /><br />
           <strong>Hemandh P M</strong> &amp; <strong>Athira Prakash</strong>
         </p>
 
@@ -343,8 +343,8 @@ function InviteSection({ invite }) {
 }
 
 function CelebSection({ invite }) {
-  const hideWedding = invite === 'reception';
-  const hideReception = invite === 'wedding';
+  const hideWedding = invite === 'r';
+  const hideReception = invite === 'w';
 
   return (
     <section className="celeb-sec">
@@ -400,8 +400,8 @@ function CelebSection({ invite }) {
 }
 
 function TimelineSection({ invite }) {
-  const hideWedding = invite === 'reception';
-  const hideReception = invite === 'wedding';
+  const hideWedding = invite === 'r';
+  const hideReception = invite === 'w';
 
   return (
     <section className="tl-sec">
@@ -555,13 +555,13 @@ function ContactSection({ type }) {
    GUEST BANNER COMPONENT
 ═══════════════════════════════════════════════════════════════ */
 function GuestBanner({ invite, name }) {
-  const show = name || invite !== 'both';
+  const show = name || invite !== 'b';
   if (!show) return null;
 
   let msg = '';
   if (name) msg += `Dear ${name} — `;
-  if (invite === 'wedding') msg += 'We cordially invite you to the wedding ceremony of our beloved children, Hemandh & Athira and request the pleasure of your presence on this auspicious occasion · 3rd May';
-  else if (invite === 'reception') msg += 'We warmly invite you to join us for the wedding reception of our beloved children, Hemandh & Athira and celebrate this joyous occasion with us · 4th May';
+  if (invite === 'w') msg += 'We cordially invite you to the wedding ceremony of our beloved children, Hemandh & Athira and request the pleasure of your presence on this auspicious occasion · 3rd May';
+  else if (invite === 'r') msg += 'We warmly invite you to join us for the wedding reception of our beloved children, Hemandh & Athira and celebrate this joyous occasion with us · 4th May';
   else msg += 'We request the honour of your presence at the wedding and reception of our beloved children, Hemandh & Athira as we celebrate the beginning of their new journey together';
 
   return (
@@ -581,7 +581,7 @@ export default function App() {
   const heroRef = useRef(null);
 
   const { invite, name, type } = useGuestParams();
-  const hasBanner = !!(name || invite !== 'both');
+  const hasBanner = !!(name || invite !== 'b');
 
   useScrollReveal();
   usePetalCanvas(canvasRef);
